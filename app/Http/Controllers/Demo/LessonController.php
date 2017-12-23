@@ -6,7 +6,6 @@ use App\Http\Controllers\ApiController;
 use App\Lesson;
 use App\Transform\LessonTransform;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
 
 class LessonController extends ApiController
 {
@@ -22,6 +21,8 @@ class LessonController extends ApiController
     public function __construct(LessonTransform$transform)
     {
         $this->lessonTransform = $transform;
+        //可以做基本的认证
+        //$this->middleware(['auth.basic']);
     }
 
     /**
