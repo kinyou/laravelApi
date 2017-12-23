@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLessonTagTable extends Migration
+class CreateLessonTagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateLessonTagTable extends Migration
      */
     public function up()
     {
-        Schema::create('lesson_tag', function (Blueprint $table) {
+        Schema::create('lesson_tags', function (Blueprint $table) {
             $table->increments('id');
             //建立lesson_id索引
             $table->integer('lesson_id')->unsigned()->index();
@@ -24,7 +24,6 @@ class CreateLessonTagTable extends Migration
             $table->integer('tag_id')->unsigned()->index();
             //建立外键,包括关联删除
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
-
         });
     }
 
@@ -35,6 +34,6 @@ class CreateLessonTagTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lesson_tag');
+        Schema::dropIfExists('lesson_tags');
     }
 }

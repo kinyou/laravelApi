@@ -28,3 +28,16 @@ $factory->define(App\Lesson::class,function (Faker $faker){
        'body'=>$faker->paragraph(4),
    ] ;
 });
+
+$factory->define(App\Tag::class,function (Faker $faker){
+    return [
+        'name'=>$faker->word,
+    ];
+});
+
+$factory->define(App\LessonTag::class,function (Faker $faker){
+    return [
+        'lesson_id'=>factory(\App\Lesson::class)->create()->id,
+        'tag_id'=>factory(\App\Tag::class)->create()->id,
+    ];
+});
