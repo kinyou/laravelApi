@@ -30,9 +30,9 @@ class AuthServiceProvider extends ServiceProvider
         //注册发出访问令牌并撤销访问令牌、客户端和个人访问令牌所必需的路由
         Passport::routes();
 
-        //设置token的过期时间为5分钟
-        Passport::tokensExpireIn(Carbon::now()->addMinutes(5));
-        //设置token的刷新时间为10分钟
-        Passport::refreshTokensExpireIn(Carbon::now()->addMinutes(10));
+        //设置token的过期时间为2分钟
+        Passport::tokensExpireIn(Carbon::now()->addMinutes(2));
+        //设置token的刷新时间为5分钟
+        Passport::refreshTokensExpireIn(Carbon::now()->addMinutes(5));
     }
 }
