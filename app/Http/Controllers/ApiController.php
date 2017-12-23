@@ -36,8 +36,8 @@ class ApiController extends Controller
      * @param string $message
      * @return mixed
      */
-    public function responseNotFound($message = 'Not Found'){
-        return $this->setStatusCode(404)->responseWithError($message);
+    public function respondNotFound($message = 'Not Found'){
+        return $this->setStatusCode(404)->respondWithError($message);
     }
 
     /**
@@ -45,8 +45,8 @@ class ApiController extends Controller
      * @param string $message
      * @return mixed
      */
-    public function responseInternalError($message = 'Internal Error'){
-        return $this->setStatusCode(500)->responseWithError($message);
+    public function respondInternalError($message = 'Internal Error'){
+        return $this->setStatusCode(500)->respondWithError($message);
     }
 
     /**
@@ -54,8 +54,8 @@ class ApiController extends Controller
      * @param $data
      * @return mixed
      */
-    public function responseWithError($data){
-        return $this->response([
+    public function respondWithError($data){
+        return $this->respond([
            'data'=>[
                'message'=>$data,
                'code'=>$this->getStatusCode()
@@ -68,8 +68,8 @@ class ApiController extends Controller
      * @param $data
      * @return mixed
      */
-    public function responseWithSuccess($data){
-        return $this->$this->response([
+    public function respondWithSuccess($data){
+        return $this->respond([
             'data'=>[
                 'message'=>$data,
                 'code'=>$this->getStatusCode()
@@ -83,7 +83,7 @@ class ApiController extends Controller
      * @param array $header
      * @return mixed
      */
-    private function response($data,array $header=[]){
+    public function respond($data,array $header=[]){
         return Response::json($data,$this->getStatusCode(),$header);
     }
 }

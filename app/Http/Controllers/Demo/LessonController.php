@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Demo;
 
+use App\Http\Controllers\ApiController;
 use App\Lesson;
 use App\Transform\LessonTransform;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
 
-class LessonController extends Controller
+class LessonController extends ApiController
 {
     /**
      * @var LessonTransform
@@ -33,9 +33,9 @@ class LessonController extends Controller
     {
         $lessons = Lesson::all();
 
-        return Response::json([
-            'data'=>$this->lessonTransform->transformCollection($lessons),
-        ],200);
+        $data = $this->lessonTransform->transformCollection($lessons);
+
+        return $this->respondWithSuccess($data);
     }
 
     /**
@@ -70,17 +70,11 @@ class LessonController extends Controller
         $lesson = Lesson::find($id);
 
         if (! $lesson) {
-            return Response::json([
-                'error'=>[
-                    'message'=>'lesson is not exist',
-                    'code'=>404
-                ]
-            ],404);
+            return $this->respondNotFound('lesson is not exist');
         }
 
-        return Response::json([
-            'data'=>$this->lessonTransform->transform($lesson->toArray()),
-        ],200);
+        $data = $this->lessonTransform->transform($lesson->toArray());
+        return $this->respondWithSuccess($data);
     }
 
     /**
