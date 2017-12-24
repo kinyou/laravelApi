@@ -15,7 +15,8 @@ abstract class Transform {
      * @return array
      */
     public function transformCollection($items){
-        return array_map([$this,'transform'],$items->toArray());
+        $items = is_array($items) ? $items : $items->toArray();
+        return array_map([$this,'transform'],$items);
     }
 
     /**

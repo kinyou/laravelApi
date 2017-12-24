@@ -4,41 +4,45 @@ namespace App\Http\Controllers\Demo;
 
 use App\Http\Controllers\ApiController;
 use App\Lesson;
-use App\Transform\LessonTransform;
+use App\Tag;
+use App\Transform\TagTransform;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
 
-class LessonController extends ApiController
+class TagController extends ApiController
 {
     /**
-     * @var LessonTransform
+     * @var TagTransform
      */
-    protected $lessonTransform;
+    protected $tagTransform;
 
     /**
-     * LessonController constructor.
-     * @param LessonTransform $transform
+     * 初始化tag的转换器
+     * TagController constructor.
+     * @param TagTransform $transform
      */
-    public function __construct(LessonTransform$transform)
+    public function __construct(TagTransform$transform)
     {
-        $this->lessonTransform = $transform;
-        //可以做基本的认证
-        //$this->middleware(['auth.basic']);
+        $this->tagTransform = $transform;
     }
 
     /**
      * Display a listing of the resource.
-     *
+     * @param null $lessonId
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($lessonId = null)
     {
-        $limit = Input::get('limit',3);
-        $lessons = Lesson::paginate($limit);
+        try{
+            $tags = $lessonId ? Lesson::findOrFail($lessonId)->tags : Tag::all();
+        } catch(ModelNotFoundException$exception){
+            $message = $exception->getMessage();
+            return $this->respondNotFound($message);
+        }
 
-        $data = $this->lessonTransform->transformCollection($lessons->all());
+        $data = $this->tagTransform->transformCollection($tags);
 
-        return $this->respondWithPagination($lessons,$data);
+        return $this->respondWithSuccess($data);
     }
 
     /**
@@ -70,14 +74,7 @@ class LessonController extends ApiController
      */
     public function show($id)
     {
-        $lesson = Lesson::find($id);
-
-        if (! $lesson) {
-            return $this->respondNotFound('lesson is not exist');
-        }
-
-        $data = $this->lessonTransform->transform($lesson->toArray());
-        return $this->respondWithSuccess($data);
+        //
     }
 
     /**
@@ -113,5 +110,4 @@ class LessonController extends ApiController
     {
         //
     }
-
 }

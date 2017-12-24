@@ -2,30 +2,11 @@
 
 namespace App\Http\Controllers\Demo;
 
-use App\Http\Controllers\ApiController;
-use App\Lesson;
-use App\Transform\LessonTransform;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
+use App\Http\Controllers\Controller;
 
-class LessonController extends ApiController
+class LessonTagController extends Controller
 {
-    /**
-     * @var LessonTransform
-     */
-    protected $lessonTransform;
-
-    /**
-     * LessonController constructor.
-     * @param LessonTransform $transform
-     */
-    public function __construct(LessonTransform$transform)
-    {
-        $this->lessonTransform = $transform;
-        //可以做基本的认证
-        //$this->middleware(['auth.basic']);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -33,12 +14,7 @@ class LessonController extends ApiController
      */
     public function index()
     {
-        $limit = Input::get('limit',3);
-        $lessons = Lesson::paginate($limit);
-
-        $data = $this->lessonTransform->transformCollection($lessons->all());
-
-        return $this->respondWithPagination($lessons,$data);
+        //
     }
 
     /**
@@ -70,14 +46,7 @@ class LessonController extends ApiController
      */
     public function show($id)
     {
-        $lesson = Lesson::find($id);
-
-        if (! $lesson) {
-            return $this->respondNotFound('lesson is not exist');
-        }
-
-        $data = $this->lessonTransform->transform($lesson->toArray());
-        return $this->respondWithSuccess($data);
+        //
     }
 
     /**
@@ -113,5 +82,4 @@ class LessonController extends ApiController
     {
         //
     }
-
 }

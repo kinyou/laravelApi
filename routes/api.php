@@ -19,5 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::middleware(['api'])->prefix('v1')->group(function(){
     Route::resource('lessons','Demo\LessonController');
+    Route::resource('tags','Demo\TagController',['only'=>['show','index']]);
+    Route::get('lessons/{id}/tags','Demo\TagController@index');
 });
 

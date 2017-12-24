@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Response;
 
 class ApiController extends Controller
@@ -75,6 +77,25 @@ class ApiController extends Controller
                 'code'=>$this->getStatusCode()
             ]
         ]);
+    }
+
+    /**
+     * 数据分页的响应
+     * @param LengthAwarePaginator $paginate
+     * @param array $data
+     * @return mixed
+     */
+    public function respondWithPagination(LengthAwarePaginator $paginate,array $data){
+        $data = array_merge($data,[
+            'paginator'=>[
+                'count'=>$paginate->total(),
+                'pages'=>ceil($paginate->total() / $paginate->perPage()),
+                'page'=>$paginate->currentPage(),
+                'limit'=>$paginate->perPage(),
+            ]
+        ]);
+
+        return $this->respond($data);
     }
 
     /**
