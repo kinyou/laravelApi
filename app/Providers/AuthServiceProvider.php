@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
+use Laravel\Passport\RouteRegistrar;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -27,8 +28,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //注册发出访问令牌并撤销访问令牌、客户端和个人访问令牌所必需的路由
-        Passport::routes();
+        //注册发出访问令牌并撤销访问令牌,并修改访问url的前缀
+        Passport::routes(function(RouteRegistrar $registrar){
+        	$registrar->forAccessTokens();
+        },['prefix' => 'api']);
 
         //设置token的过期时间为2分钟
         Passport::tokensExpireIn(Carbon::now()->addMinutes(2));
